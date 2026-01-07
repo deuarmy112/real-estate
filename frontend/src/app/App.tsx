@@ -1,0 +1,30 @@
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "../components/Header";
+import Home from "../pages/Home";
+import ListingList from "../pages/ListingList";
+import ListingDetail from "../pages/ListingDetail";
+import CreateListing from "../pages/CreateListing";
+import EditListing from "../pages/EditListing";
+import AgentProfile from "../pages/AgentProfile";
+import ContactAgent from "../pages/ContactAgent";
+import "../styles.css";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Header />
+      <main className="container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/listings" element={<ListingList />} />
+          <Route path="/listings/:id" element={<ListingDetail />} />
+          <Route path="/listings/:id/edit" element={<EditListing />} />
+          <Route path="/create" element={<CreateListing />} />
+          <Route path="/agents/:id" element={<AgentProfile />} />
+          <Route path="/contact/:id" element={<ContactAgent />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
+  );
+}
