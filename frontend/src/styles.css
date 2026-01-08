@@ -51,21 +51,29 @@ nav a:hover{background:var(--glass);color:var(--accent)}
 
 @media (max-width:720px){
   .hero > div{flex-direction:column;align-items:flex-start;text-align:left}
-  .actions{display:flex;flex-direction:row;gap:8px;margin-top:12px}
+  /* stack actions and search into a column */
+  .actions{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .search{width:100%;margin-left:0}
+  .search input{width:100%}
   .btn{width:100%;display:inline-block;text-align:center;padding:10px 12px;font-size:14px}
   .btn-secondary{width:100%}
   .card-image img{height:160px}
   .gallery img{width:140px;height:92px}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-  aside{width:100%}
-  .header-inner{align-items:flex-start}
-  nav{width:100%}
+  /* force grid to a single column for block layout */
+  .grid{grid-template-columns:1fr;gap:14px}
+  aside{width:100%;order:3}
+  /* header and nav stack vertically */
+  .header-inner{align-items:flex-start;flex-direction:column;gap:10px}
+  nav{width:100%;display:flex;flex-direction:column}
   nav a{display:block;padding:10px;border-radius:8px;margin:6px 0}
   .image-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
   .image-previews img{width:88px;height:64px;object-fit:cover;border-radius:6px}
   .form input,.form textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #e6edf0}
   .card-body{padding:10px}
   .price{font-size:1rem}
+  /* make featured videos stack vertically */
+  .featured-videos{flex-direction:column;gap:12px}
+  .featured-videos > div{min-width:unset}
 }
 
 @media (max-width:480px){
