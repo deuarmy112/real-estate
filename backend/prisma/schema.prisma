@@ -23,6 +23,7 @@ model Listing {
   price     Int
   address   String?
   images    String[]
+  video     String?
   agent     User?    @relation(fields: [agentId], references: [id])
   agentId   Int?
   createdAt DateTime @default(now())
