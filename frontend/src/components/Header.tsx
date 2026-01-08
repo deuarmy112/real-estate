@@ -15,17 +15,18 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <div style={{display:'flex',alignItems:'center'}}>
+        <div style={{display:'flex',alignItems:'center',gap:16}}>
           <Link to="/" className="brand">
-            Boroko Real Estate
+            <div style={{fontSize:16}}>Boroko</div>
+            <div style={{fontSize:11, marginTop:2}}>Real Estate</div>
           </Link>
-          <div className="search" style={{marginLeft:12}}>
-            <input placeholder="Search city, address, or zip" style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #e6edf0' }} />
+          <div className="search" style={{flex:1}}>
+            <input className="search-input" placeholder="Search city, neighborhood, or property" />
           </div>
         </div>
         <nav>
           <Link to="/listings">Listings</Link>
-          <Link to="/create">Create Listing</Link>
+          <Link to="/create">Create</Link>
           {user ? (
             <>
               <span style={{marginLeft:12, marginRight:8}}>Hi, {user.name || user.email}</span>
