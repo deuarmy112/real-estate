@@ -8,10 +8,36 @@ type Props = {
   address?: string;
   image?: string;
   agentId?: number | null;
+  vip?: boolean;
 };
 
 export default function ListingCard({ id, title, price, address, image, agentId }: Props) {
   const FALLBACK = 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder';
+  const [isFav, setIsFav] = React.useState(false);
+
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem('favorites');
+      const favs = raw ? JSON.parse(raw) : [];
+      setIsFav(favs.includes(id));
+    } catch (e) {
+      setIsFav(false);
+    }
+  }, [id]);
+
+  const toggleFav = (ev?: any) => {
+    ev?.stopPropagation();
+    try {
+      const raw = localStorage.getItem('favorites');
+      const favs = raw ? JSON.parse(raw) : [];
+      const exists = favs.includes(id);
+      const next = exists ? favs.filter((x: number) => x !== id) : [id, ...favs];
+      localStorage.setItem('favorites', JSON.stringify(next));
+      setIsFav(!exists);
+    } catch (e) {
+      console.error('fav toggle', e);
+    }
+  };
 
   return (
     <article className="card">
@@ -20,9 +46,10 @@ export default function ListingCard({ id, title, price, address, image, agentId 
           <img src={image || FALLBACK} alt={title} />
         </Link>
         <div className="price-badge">${price.toLocaleString()}</div>
-        <button className="fav-btn" aria-label="favorite">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.9-10-8.1C-0.5 7.7 4 4 7 6.4 9 8 12 11 12 11s3-3 5-4.6c3-2.4 7.5.7 5 6.5C19.5 16.1 12 21 12 21z" stroke="#fff" strokeWidth="0.8"/></svg>
+        <button className="fav-btn" aria-label="favorite" onClick={toggleFav}>
+          {isFav ? '❤️' : '🤍'}
         </button>
+        {vip && <div className="vip-badge">TOP</div>}
       </div>
 
       <div className="card-body">

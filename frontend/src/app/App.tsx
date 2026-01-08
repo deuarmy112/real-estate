@@ -10,6 +10,7 @@ import AgentProfile from "../pages/AgentProfile";
 import ContactAgent from "../pages/ContactAgent";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Favorites from "../pages/Favorites";
 import "../styles.css";
 import Footer from "../components/Footer";
 
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/create" element={<CreateListing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="/agents/:id" element={<AgentProfile />} />
           <Route path="/contact/:id" element={<ContactAgent />} />
         </Routes>

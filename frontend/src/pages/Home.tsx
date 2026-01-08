@@ -159,6 +159,28 @@ export default function Home() {
               <Link to="/listings" className="btn">Browse Listings</Link>
               <Link to="/create" className="btn btn-secondary">Create Listing</Link>
             </div>
+
+            <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+              {[
+                { k: 'apartments', label: 'Apartments', svg: (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h18" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round"/><path d="M5 21V9a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 21V12h6v9" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                )},
+                { k: 'houses', label: 'Houses', svg: (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 11.5L12 4l9 7.5" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 22V12h14v10" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                )},
+                { k: 'villas', label: 'Villas', svg: (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="18" height="13" rx="2" stroke="#0f766e" strokeWidth="1.5"/><path d="M7 8V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                )},
+                { k: 'commercial', label: 'Commercial', svg: (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h18" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round"/><rect x="4" y="4" width="16" height="12" rx="1" stroke="#0f766e" strokeWidth="1.5"/><path d="M8 8h.01M12 8h.01M16 8h.01" stroke="#0f766e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                )}
+              ].map(c => (
+                <Link key={c.k} to={`/listings?category=${encodeURIComponent(c.k)}`} className="btn btn-secondary" style={{display:'inline-flex',alignItems:'center',gap:8}}>
+                  <span style={{display:'inline-flex',alignItems:'center'}}>{c.svg}</span>
+                  <span>{c.label}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>

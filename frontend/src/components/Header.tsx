@@ -12,6 +12,22 @@ export default function Header() {
     navigate('/');
   };
 
+  const [favCount, setFavCount] = React.useState(0);
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem('favorites');
+      const favs = raw ? JSON.parse(raw) : [];
+      setFavCount(favs.length || 0);
+    } catch (e) {
+      setFavCount(0);
+    }
+    const onStorage = () => {
+      try { const raw = localStorage.getItem('favorites'); const favs = raw ? JSON.parse(raw) : []; setFavCount(favs.length || 0); } catch(e){}
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   return (
     <header className="site-header">
       <div className="container header-inner">
@@ -38,6 +54,9 @@ export default function Header() {
               <Link to="/register" style={{marginLeft:12}}>Register</Link>
             </>
           )}
+          <Link to="/favorites" style={{marginLeft:12, display:'inline-flex', alignItems:'center', gap:8}}>
+            ❤️ <span className="muted">My favorites</span> <span style={{marginLeft:6,fontWeight:700}}>{favCount}</span>
+          </Link>
           <Link to="/contact/1" className="btn" style={{marginLeft:12,padding:'8px 12px'}}>Contact</Link>
         </nav>
       </div>
