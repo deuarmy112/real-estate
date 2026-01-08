@@ -9,12 +9,7 @@ type Props = {
   onMaxChange?: (v: number | null) => void;
 };
 
-export default function SearchBar({ value, onChange, minPrice, maxPrice, onMinChange, onMaxChange }: Props) {
-  return (
-    <div style={{ display: "flex", gap: 8, marginBottom: 12, alignItems: "center" }}>
-      <input placeholder="Search city, address, or zip" value={value} onChange={(e: any) => onChange(e.target.value)} />
-      <input placeholder="min price" type="number" value={minPrice ?? ""} onChange={(e: any) => onMinChange?.(e.target.value ? Number(e.target.value) : null)} style={{ width: 120 }} />
-      <input placeholder="max price" type="number" value={maxPrice ?? ""} onChange={(e: any) => onMaxChange?.(e.target.value ? Number(e.target.value) : null)} style={{ width: 120 }} />
-    </div>
-  );
+export default function SearchBar(/* props: Props */) {
+  // Search bar removed per request; keep component as a stub to avoid breaking imports.
+  return null;
 }

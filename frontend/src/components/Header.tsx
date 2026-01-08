@@ -38,7 +38,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <div style={{display:'flex',alignItems:'center',gap:16}}>
+        <div style={{display:'flex',alignItems:'center',gap:16, flex:1}}>
           <Link to="/" className="brand">
             <div style={{fontSize:16}}>Boroko</div>
             <div style={{fontSize:11, marginTop:2}}>Real Estate</div>
@@ -57,24 +57,16 @@ export default function Header() {
             </select>
           </div>
         </div>
-        <nav>
-          <Link to="/listings">Listings</Link>
-          <Link to="/create">Create</Link>
+        <nav style={{display:'flex',alignItems:'center',gap:12}}>
           {user ? (
             <>
-              <span style={{marginLeft:12, marginRight:8}}>Hi, {user.name || user.email}</span>
+              <span style={{marginRight:8}}>Hi, {user.name || user.email}</span>
               <button className="btn" onClick={logout}>Sign out</button>
             </>
-          ) : (
-            <>
-              <Link to="/login" style={{marginLeft:12}}>Sign in</Link>
-              <Link to="/register" style={{marginLeft:12}}>Register</Link>
-            </>
-          )}
-          <Link to="/favorites" style={{marginLeft:12, display:'inline-flex', alignItems:'center', gap:8}}>
+          ) : null}
+          <Link to="/favorites" style={{display:'inline-flex', alignItems:'center', gap:8}}>
             ❤️ <span className="muted">My favorites</span> <span style={{marginLeft:6,fontWeight:700}}>{favCount}</span>
           </Link>
-          <Link to="/contact/1" className="btn" style={{marginLeft:12,padding:'8px 12px'}}>Contact</Link>
         </nav>
       </div>
     </header>
