@@ -1,38 +1,23 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "../components/Header";
-import Home from "../pages/Home";
-import ListingList from "../pages/ListingListClean";
-import ListingDetail from "../pages/ListingDetail";
-import CreateListing from "../pages/CreateListing";
-import EditListing from "../pages/EditListing";
-import AgentProfile from "../pages/AgentProfile";
-import ContactAgent from "../pages/ContactAgent";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Favorites from "../pages/Favorites";
 import "../styles.css";
-import Footer from "../components/Footer";
 
 export default function App() {
+  const [activeCategory, setActiveCategory] = React.useState('all');
+
   return (
-    <BrowserRouter>
-      <Header />
+    <div>
+      <Header activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
+
       <main className="container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/listings" element={<ListingList />} />
-          <Route path="/listings/:id" element={<ListingDetail />} />
-          <Route path="/listings/:id/edit" element={<EditListing />} />
-          <Route path="/create" element={<CreateListing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/agents/:id" element={<AgentProfile />} />
-          <Route path="/contact/:id" element={<ContactAgent />} />
-        </Routes>
+        <section style={{padding:28,minHeight:240}}>
+          <h2 style={{marginTop:0}}>Category: {activeCategory}</h2>
+          <p className="muted">This page has been simplified to show new content driven by the header categories. Add your components here to render listings for the selected category.</p>
+          <div style={{marginTop:18}}>
+            {/* Placeholder area for category-driven content */}
+          </div>
+        </section>
       </main>
-      <Footer />
-    </BrowserRouter>
+    </div>
   );
 }

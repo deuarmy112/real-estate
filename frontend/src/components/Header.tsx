@@ -1,7 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Header() {
+type HeaderProps = {
+  activeCategory: string;
+  onCategoryChange: (id: string) => void;
+};
+
+export default function Header({ activeCategory, onCategoryChange }: HeaderProps) {
   const navigate = useNavigate();
   const userJson = localStorage.getItem('user');
   const user = userJson ? JSON.parse(userJson) : null;
@@ -35,7 +40,6 @@ export default function Header() {
     // future: lift state or trigger search/filter action
   };
 
-  const [activeCategory, setActiveCategory] = React.useState('all');
 
   return (
     <header className="site-header">
@@ -68,28 +72,28 @@ export default function Header() {
           ) : null}
         </nav>
       </div>
-      <div className="container">
-        <div className="categories" role="tablist" aria-label="Listing categories" style={{display:'flex',gap:10,overflowX:'auto',padding:'8px 0'}}>
-          {[
-            { id: 'all', label: 'All' },
-            { id: 'houses', label: 'Houses' },
-            { id: 'apartments', label: 'Apartments' },
-            { id: 'commercial', label: 'Commercial' },
-            { id: 'land', label: 'Land' },
-            { id: 'new', label: 'New Listings' },
-          ].map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={"cat-btn" + (activeCategory === cat.id ? ' active' : '')}
-              aria-pressed={activeCategory === cat.id}
-              style={{padding:'8px 12px',borderRadius:999,border:'1px solid transparent',background:'transparent'}}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-      </div>
+          <div className="container">
+            <div className="categories" role="tablist" aria-label="Listing categories" style={{display:'flex',gap:10,overflowX:'auto',padding:'8px 0'}}>
+              {[
+                { id: 'all', label: 'All' },
+                { id: 'houses', label: 'Houses' },
+                { id: 'apartments', label: 'Apartments' },
+                { id: 'commercial', label: 'Commercial' },
+                { id: 'land', label: 'Land' },
+                { id: 'new', label: 'New Listings' },
+              ].map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => onCategoryChange(cat.id)}
+                  className={"cat-btn" + (activeCategory === cat.id ? ' active' : '')}
+                  aria-pressed={activeCategory === cat.id}
+                  style={{padding:'8px 12px',borderRadius:999,border:'1px solid transparent',background:'transparent'}}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
     </header>
   );
 }
