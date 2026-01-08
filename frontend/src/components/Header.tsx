@@ -28,6 +28,13 @@ export default function Header() {
     return () => window.removeEventListener('storage', onStorage);
   }, []);
 
+  const [filter, setFilter] = React.useState('any');
+
+  const handleFilterChange = (e: any) => {
+    setFilter(String(e.target.value));
+    // future: lift state or trigger search/filter action
+  };
+
   return (
     <header className="site-header">
       <div className="container header-inner">
@@ -38,6 +45,16 @@ export default function Header() {
           </Link>
           <div className="search" style={{flex:1}}>
             <input className="search-input" placeholder="Search city, neighborhood, or property" />
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <label htmlFor="header-filter" style={{fontSize:12,color:'#666'}}>Filter</label>
+            <select id="header-filter" value={filter} onChange={handleFilterChange} style={{padding:'6px 8px',borderRadius:6,border:'1px solid #ddd'}}>
+              <option value="any">Any</option>
+              <option value="sale">For Sale</option>
+              <option value="rent">For Rent</option>
+              <option value="3plus">3+ Beds</option>
+              <option value="photos">Has Photos</option>
+            </select>
           </div>
         </div>
         <nav>
