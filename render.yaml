@@ -21,3 +21,5 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: true
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: "true"
