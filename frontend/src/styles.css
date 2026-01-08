@@ -52,7 +52,7 @@ nav a:hover{background:var(--glass);color:var(--accent)}
 @media (max-width:720px){
   .hero > div{flex-direction:column;align-items:flex-start;text-align:left}
   .actions{display:flex;flex-direction:row;gap:8px;margin-top:12px}
-  .btn{width:100%;display:inline-block;text-align:center}
+  .btn{width:100%;display:inline-block;text-align:center;padding:10px 12px;font-size:14px}
   .btn-secondary{width:100%}
   .card-image img{height:160px}
   .gallery img{width:140px;height:92px}
@@ -60,14 +60,28 @@ nav a:hover{background:var(--glass);color:var(--accent)}
   aside{width:100%}
   .header-inner{align-items:flex-start}
   nav{width:100%}
+  nav a{display:block;padding:10px;border-radius:8px;margin:6px 0}
+  .image-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .image-previews img{width:88px;height:64px;object-fit:cover;border-radius:6px}
+  .form input,.form textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #e6edf0}
+  .card-body{padding:10px}
+  .price{font-size:1rem}
 }
 
 @media (max-width:480px){
   .hero h1{font-size:1.4rem}
   .lead{font-size:0.95rem}
   .card-image img{height:140px}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .muted{font-size:13px}
+  .price{font-size:0.98rem}
 }
+
+/* Small polish for touch targets */
+button.btn, .btn{min-height:44px;padding:10px 14px}
+
+/* Ensure forms and inputs scale on small devices */
+input, textarea, select { font-size: 15px; }
 
 @media (max-width:720px){
   .hero h1{font-size:1.6rem}
