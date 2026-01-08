@@ -5,7 +5,7 @@ import api from "../services/api";
 export default function ContactAgent() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [agent, setAgent] = useState<any | null>(null);
+  const [agent, setAgent] = useState(null as any | null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");

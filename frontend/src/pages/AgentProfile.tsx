@@ -4,7 +4,7 @@ import api from "../services/api";
 
 export default function AgentProfile() {
   const { id } = useParams();
-  const [agent, setAgent] = useState<any | null>(null);
+  const [agent, setAgent] = useState(null as any | null);
 
   useEffect(() => {
     if (!id) return;
