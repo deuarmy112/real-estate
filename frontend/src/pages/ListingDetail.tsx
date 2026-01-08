@@ -19,7 +19,9 @@ export default function ListingDetail() {
       <p className="muted">{listing.address}</p>
       <p className="price">${listing.price.toLocaleString()}</p>
       <div className="gallery">
-        {(listing.images || []).map((src: string, i: number) => (
+        {(listing.images && listing.images.length > 0 ? listing.images : [
+          'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'
+        ]).map((src: string, i: number) => (
           <img key={i} src={src} alt={`${listing.title} ${i + 1}`} />
         ))}
       </div>

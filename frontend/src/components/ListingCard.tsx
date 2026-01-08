@@ -11,11 +11,13 @@ type Props = {
 };
 
 export default function ListingCard({ id, title, price, address, image, agentId }: Props) {
+  const FALLBACK = 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder';
+
   return (
     <article className="card">
       <Link to={`/listings/${id}`} className="card-link">
         <div className="card-image">
-          <img src={image || "/placeholder.png"} alt={title} />
+          <img src={image || FALLBACK} alt={title} />
         </div>
         <div className="card-body">
           <h3>{title}</h3>
