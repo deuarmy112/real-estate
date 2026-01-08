@@ -4,12 +4,42 @@ import dotenv from "dotenv";
 import prisma from "./db";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { Request } from 'express';
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// ensure uploads folder exists
+const uploadsDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+app.use('/uploads', express.static(uploadsDir));
+
+const storage = multer.diskStorage({
+  destination: function (req: Request, file: Express.Multer.File, cb: (err: Error | null, dest: string) => void) { cb(null, uploadsDir); },
+  filename: function (req: Request, file: Express.Multer.File, cb: (err: Error | null, filename: string) => void) { cb(null, Date.now() + '-' + file.originalname.replace(/\s+/g, '-')); }
+});
+const upload = multer({ storage });
+
+function authenticateJWT(req: any, res: any, next: any) {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ error: 'Unauthorized' });
+  const parts = auth.split(' ');
+  if (parts.length !== 2) return res.status(401).json({ error: 'Unauthorized' });
+  const token = parts[1];
+  try {
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
+    req.user = { id: decoded.userId };
+    next();
+  } catch (e) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+}
 
 app.get("/api/health", (req: any, res: any) => {
   res.json({ status: "ok" });
@@ -57,21 +87,40 @@ app.get('/api/listings/:id', async (req: any, res: any) => {
 });
 
 app.post('/api/listings', async (req: any, res: any) => {
+  return res.status(401).json({ error: 'Use authenticated endpoint /api/listings/create' });
+});
+
+app.post('/api/listings/create', authenticateJWT, async (req: any, res: any) => {
   const data = req.body;
+  // attach agentId from token
+  data.agentId = req.user.id;
   const created = await prisma.listing.create({ data });
   res.status(201).json(created);
 });
 
-app.put('/api/listings/:id', async (req: any, res: any) => {
+app.put('/api/listings/:id', authenticateJWT, async (req: any, res: any) => {
   const id = Number(req.params.id);
+  const listing = await prisma.listing.findUnique({ where: { id } });
+  if (!listing) return res.status(404).json({ error: 'Not found' });
+  if (listing.agentId !== req.user.id) return res.status(403).json({ error: 'Forbidden' });
   const updated = await prisma.listing.update({ where: { id }, data: req.body });
   res.json(updated);
 });
 
-app.delete('/api/listings/:id', async (req: any, res: any) => {
+app.delete('/api/listings/:id', authenticateJWT, async (req: any, res: any) => {
   const id = Number(req.params.id);
+  const listing = await prisma.listing.findUnique({ where: { id } });
+  if (!listing) return res.status(404).json({ error: 'Not found' });
+  if (listing.agentId !== req.user.id) return res.status(403).json({ error: 'Forbidden' });
   await prisma.listing.delete({ where: { id } });
   res.json({ ok: true });
+});
+
+// file upload
+app.post('/api/upload', authenticateJWT, upload.single('file'), (req: any, res: any) => {
+  if (!req.file) return res.status(400).json({ error: 'No file' });
+  const url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  res.json({ url });
 });
 
 // Users / agents

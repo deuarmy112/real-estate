@@ -8,6 +8,8 @@ import CreateListing from "../pages/CreateListing";
 import EditListing from "../pages/EditListing";
 import AgentProfile from "../pages/AgentProfile";
 import ContactAgent from "../pages/ContactAgent";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 import "../styles.css";
 
 export default function App() {
@@ -21,6 +23,8 @@ export default function App() {
           <Route path="/listings/:id" element={<ListingDetail />} />
           <Route path="/listings/:id/edit" element={<EditListing />} />
           <Route path="/create" element={<CreateListing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/agents/:id" element={<AgentProfile />} />
           <Route path="/contact/:id" element={<ContactAgent />} />
         </Routes>
