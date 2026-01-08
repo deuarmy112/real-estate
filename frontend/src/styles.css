@@ -55,6 +55,12 @@ nav a:hover{background:var(--glass);color:var(--accent)}
 /* Search input */
 .search-input{width:100%;padding:12px 14px;border-radius:12px;border:0;box-shadow:0 8px 20px rgba(11,107,99,0.08)}
 
+/* Category pill buttons under header */
+.categories{display:flex;gap:10px;align-items:center}
+.cat-btn{background:transparent;border:1px solid rgba(15,118,110,0.06);padding:8px 12px;border-radius:999px;color:var(--muted);cursor:pointer}
+.cat-btn:hover{background:var(--glass);color:var(--accent)}
+.cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
 /* Layout improvements */
 .site-footer{border-top:1px solid rgba(15,118,110,0.04);margin-top:40px}
 

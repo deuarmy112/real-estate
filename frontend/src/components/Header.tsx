@@ -35,6 +35,8 @@ export default function Header() {
     // future: lift state or trigger search/filter action
   };
 
+  const [activeCategory, setActiveCategory] = React.useState('all');
+
   return (
     <header className="site-header">
       <div className="container header-inner">
@@ -65,6 +67,28 @@ export default function Header() {
             </>
           ) : null}
         </nav>
+      </div>
+      <div className="container">
+        <div className="categories" role="tablist" aria-label="Listing categories" style={{display:'flex',gap:10,overflowX:'auto',padding:'8px 0'}}>
+          {[
+            { id: 'all', label: 'All' },
+            { id: 'houses', label: 'Houses' },
+            { id: 'apartments', label: 'Apartments' },
+            { id: 'commercial', label: 'Commercial' },
+            { id: 'land', label: 'Land' },
+            { id: 'new', label: 'New Listings' },
+          ].map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={"cat-btn" + (activeCategory === cat.id ? ' active' : '')}
+              aria-pressed={activeCategory === cat.id}
+              style={{padding:'8px 12px',borderRadius:999,border:'1px solid transparent',background:'transparent'}}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </div>
     </header>
   );
