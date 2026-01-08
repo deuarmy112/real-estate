@@ -22,6 +22,7 @@ export default function Home() {
 
       <section className="container">
         <h2>Featured Sales</h2>
+        <p className="muted">add sales contents here</p>
         <div className="grid">
           {featured.map((l: any) => (
             <ListingCard key={l.id} id={l.id} title={l.title} price={l.price} address={l.address} image={l.images?.[0]} agentId={l.agentId} />

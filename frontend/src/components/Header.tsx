@@ -15,7 +15,7 @@ export default function Header() {
         </div>
         <nav>
           <Link to="/listings">Listings</Link>
-          <Link to="/create">Create</Link>
+          <Link to="/create">Create Listing</Link>
           <Link to="/contact/1" className="btn" style={{marginLeft:12,padding:'8px 12px'}}>Contact</Link>
         </nav>
       </div>
