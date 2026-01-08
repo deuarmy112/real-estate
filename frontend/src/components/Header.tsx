@@ -43,7 +43,7 @@ export default function Header() {
             <div style={{fontSize:16}}>Boroko</div>
             <div style={{fontSize:11, marginTop:2}}>Real Estate</div>
           </Link>
-          <div className="search" style={{flex:1}}>
+          <div className="search" style={{flex:1, marginLeft:20}}>
             <input className="search-input" placeholder="Search city, neighborhood, or property" />
           </div>
           <div style={{display:'flex',alignItems:'center',gap:8}}>
@@ -64,9 +64,6 @@ export default function Header() {
               <button className="btn" onClick={logout}>Sign out</button>
             </>
           ) : null}
-          <Link to="/favorites" style={{display:'inline-flex', alignItems:'center', gap:8}}>
-            ❤️ <span className="muted">My favorites</span> <span style={{marginLeft:6,fontWeight:700}}>{favCount}</span>
-          </Link>
         </nav>
       </div>
     </header>
