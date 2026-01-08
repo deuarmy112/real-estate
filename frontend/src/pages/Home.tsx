@@ -9,6 +9,55 @@ export default function Home() {
   const [loading, setLoading] = useState(true as boolean);
   const [error, setError] = useState(null as string | null);
   const [query, setQuery] = useState("");
+  const [posts, setPosts] = useState([] as any[]);
+
+  const samplePosts = [
+    {
+      id: "p1",
+      title: "Market Update: Q4 Trends",
+      excerpt: "Prices held steady in many neighborhoods while inventory tightened.",
+      date: "2026-01-02",
+      image: "https://images.unsplash.com/photo-1560184897-6b6a1b1f7d5a?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=abc",
+    },
+    {
+      id: "p2",
+      title: "How to Stage Your Home",
+      excerpt: "Simple staging tips that improve photos and buyer impressions.",
+      date: "2025-12-15",
+      image: "https://images.unsplash.com/photo-1505691723518-36a3f1d9a1d4?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=def",
+    },
+    {
+      id: "p3",
+      title: "Financing Options Explained",
+      excerpt: "Compare mortgages, rates, and what suits first-time buyers.",
+      date: "2025-11-11",
+      image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=ghi",
+    },
+  ];
+
+  useEffect(() => {
+    if (posts.length === 0) setPosts(samplePosts);
+  }, []);
+
+  const PostForm = ({ onCreate }: any) => {
+    const [pt, setPt] = useState("");
+    const [pe, setPe] = useState("");
+    const [pi, setPi] = useState("");
+    const submitPost = (ev: any) => {
+      ev.preventDefault();
+      const p = { id: `p${Date.now()}`, title: pt || "Untitled", excerpt: pe || "", image: pi || samplePosts[0].image, date: new Date().toISOString().slice(0,10) };
+      onCreate(p);
+      setPt(""); setPe(""); setPi("");
+    };
+    return (
+      <form onSubmit={submitPost} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <input placeholder="Title" value={pt} onChange={(e: any) => setPt(e.target.value)} />
+        <input placeholder="Image URL (optional)" value={pi} onChange={(e: any) => setPi(e.target.value)} />
+        <textarea placeholder="Excerpt" value={pe} onChange={(e: any) => setPe(e.target.value)} />
+        <button className="btn" type="submit">Post</button>
+      </form>
+    );
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -170,7 +219,45 @@ export default function Home() {
                 ))}
               </div>
             </div>
+              <div style={{ marginTop: 12 }}>
+                <div style={{ background: "#fff", padding: 12, borderRadius: 8 }}>
+                  <h4>Latest Posts</h4>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {posts.map((p: any) => (
+                      <div key={p.id} style={{ display: "flex", gap: 8 }}>
+                        <img src={p.image} alt={p.title} style={{ width: 72, height: 56, objectFit: "cover", borderRadius: 6 }} />
+                        <div>
+                          <div style={{ fontWeight: 700 }}>{p.title}</div>
+                          <div className="muted" style={{ fontSize: 12 }}>{p.date}</div>
+                          <div style={{ fontSize: 13 }}>{p.excerpt}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 12 }}>
+                <div style={{ background: "#fff", padding: 12, borderRadius: 8 }}>
+                  <h4>Create Post</h4>
+                  <PostForm onCreate={(p: any) => setPosts((s: any[]) => [p, ...s])} />
+                </div>
+              </div>
           </aside>
+        </div>
+      </section>
+
+      <section className="container">
+        <h2>News & Articles</h2>
+        <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+          {posts.map((p: any) => (
+            <article key={p.id} style={{ background: "#fff", padding: 12, borderRadius: 8 }}>
+              <img src={p.image} alt={p.title} style={{ width: "100%", height: 160, objectFit: "cover", borderRadius: 6 }} />
+              <h3 style={{ marginTop: 8 }}>{p.title}</h3>
+              <div className="muted">{p.date}</div>
+              <p>{p.excerpt}</p>
+            </article>
+          ))}
         </div>
       </section>
 
