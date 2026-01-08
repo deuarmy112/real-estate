@@ -13,7 +13,7 @@ type Listing = {
 
 type Agent = { id: number; name: string; email?: string; phone?: string };
 
-const API_BASE = "https://real-estate-backend-aqg2.onrender.com";
+const API_BASE = (import.meta as any).env?.VITE_API_URL || "https://real-estate-backend-aqg2.onrender.com";
 
 function getAuthHeaders() {
   const token = localStorage.getItem('token');

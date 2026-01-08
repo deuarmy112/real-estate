@@ -11,6 +11,7 @@ import ContactAgent from "../pages/ContactAgent";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import "../styles.css";
+import Footer from "../components/Footer";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/contact/:id" element={<ContactAgent />} />
         </Routes>
       </main>
+      <Footer />
     </BrowserRouter>
   );
 }

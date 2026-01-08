@@ -20,7 +20,7 @@ export default function Header() {
             Boroko Real Estate
           </Link>
           <div className="search" style={{marginLeft:12}}>
-            <input placeholder="Search city, address, or zip" />
+            <input placeholder="Search city, address, or zip" style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #e6edf0' }} />
           </div>
         </div>
         <nav>
