@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import prisma from "./db";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -13,9 +15,33 @@ app.get("/api/health", (req: any, res: any) => {
   res.json({ status: "ok" });
 });
 
-// Auth stub
-app.post("/api/auth/register", (req: any, res: any) => {
-  res.status(201).json({ message: "register endpoint (stub)" });
+// Auth: register
+app.post("/api/auth/register", async (req: any, res: any) => {
+  const { email, name, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'email and password required' });
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) return res.status(409).json({ error: 'User already exists' });
+  const hash = await bcrypt.hash(password, 10);
+  const user = await prisma.user.create({ data: { email, name, password: hash } });
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '7d' });
+  // don't return password
+  // @ts-ignore
+  delete user.password;
+  res.status(201).json({ user, token });
+});
+
+// Auth: login
+app.post('/api/auth/login', async (req: any, res: any) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'email and password required' });
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '7d' });
+  // @ts-ignore
+  delete user.password;
+  res.json({ user, token });
 });
 
 // Listings

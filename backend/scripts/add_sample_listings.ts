@@ -44,6 +44,47 @@ async function main() {
       ],
       agentId: 2
     }
+    ,
+    {
+      title: 'Beach Bungalow',
+      description: 'Sunny 3BR bungalow steps from the sand with ocean views.',
+      price: 525000,
+      address: '12 Sand Dune Rd',
+      images: ['https://images.unsplash.com/photo-1505691723518-36a3f1d9a1d4?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6'],
+      agentId: 1
+    },
+    {
+      title: 'Luxury Condo',
+      description: 'High-floor 3BR condo with skyline views and concierge.',
+      price: 980000,
+      address: '1 Luxury Plaza, Unit 45',
+      images: ['https://images.unsplash.com/photo-1565182999561-63c6d9f7b0d0?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7'],
+      agentId: 2
+    },
+    {
+      title: 'Urban Townhouse',
+      description: 'Contemporary 3BR townhouse with private patio in trendy neighborhood.',
+      price: 615000,
+      address: '9 Elm St',
+      images: ['https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8'],
+      agentId: 1
+    },
+    {
+      title: 'Fixer-Upper Opportunity',
+      description: 'Affordable property with great bones — perfect renovation project.',
+      price: 145000,
+      address: '33 Old Mill Rd',
+      images: ['https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9'],
+      agentId: 2
+    },
+    {
+      title: 'Commercial Lot',
+      description: 'Prime corner lot suitable for retail or mixed-use development.',
+      price: 350000,
+      address: 'Corner of Main & 4th',
+      images: ['https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=10'],
+      agentId: 1
+    }
   ];
 
   try {
