@@ -92,6 +92,11 @@ nav a:hover{background:var(--glass);color:var(--accent)}
 .post-title{font-size:0.95rem;font-weight:700}
 .reactions{display:flex;gap:8px;color:var(--muted);font-size:13px}
 
+/* Row container for independent horizontal scrolling */
+.post-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-behavior:smooth}
+.post-row::-webkit-scrollbar{height:10px}
+.post-row::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.08);border-radius:6px}
+
 /* keep the same 15-visible design on all breakpoints; small devices will show smaller cards */
 @media (prefers-reduced-motion: reduce) {
   .post-grid{ -webkit-overflow-scrolling: auto }
