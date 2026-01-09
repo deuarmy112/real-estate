@@ -17,12 +17,20 @@ function useAutoScroll(ref: React.RefObject<HTMLElement>, speed = 20, direction 
 
     const step = (t: number) => {
       if (!last) last = t;
+      // if paused, reset last so we don't get a giant dt spike on resume
+      if (paused) {
+        last = t;
+        raf = requestAnimationFrame(step);
+        return;
+      }
       const dt = t - last;
       last = t;
-      if (!paused && el.scrollWidth > el.clientWidth) {
+      if (el.scrollWidth > el.clientWidth) {
         el.scrollLeft += direction * (speed * dt / 1000);
-        if (el.scrollLeft >= el.scrollWidth - el.clientWidth) el.scrollLeft = 0;
-        if (el.scrollLeft <= 0 && direction < 0) el.scrollLeft = el.scrollWidth - el.clientWidth;
+        // wrap smoothly when reaching the end
+        const max = el.scrollWidth - el.clientWidth;
+        if (el.scrollLeft > max) el.scrollLeft = el.scrollLeft - max;
+        if (el.scrollLeft < 0) el.scrollLeft = (el.scrollLeft + max) % max;
       }
       raf = requestAnimationFrame(step);
     };
@@ -65,7 +73,7 @@ export default function HotSales() {
           >
             <div className="media-wrap">
               {p.media.type === 'image' ? (
-                <img src={p.media.src} alt={p.title} />
+                <img src={p.media.src} alt={p.title} loading="lazy" />
               ) : (
                 <video src={p.media.src} muted playsInline controls preload="metadata" />
               )}
