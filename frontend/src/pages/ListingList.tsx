@@ -1,78 +1,80 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import ListingCard from '../components/ListingCard'
+import ListingRow from '../components/ListingRow'
+import api from '../services/api'
+import SearchBar from '../components/SearchBar'
+import Spinner from '../components/Spinner'
 
 export default function ListingList() {
-  return (
-    <section className="container">
-      <h2>Listings</h2>
-      <div className="muted">Listing list temporarily simplified for build.</div>
-    </section>
-  )
-}
-import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
-import ListingCard from "../components/ListingCard";
-import ListingRow from "../components/ListingRow";
-import api from "../services/api";
-import SearchBar from "../components/SearchBar";
-import Pagination from "../components/Pagination";
-import React, { useEffect, useRef, useState } from 'react';
-
-export default function ListingList() {
-  const [listings, setListings] = useState([] as any[]);
-  const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState("");
-  const [minPrice, setMinPrice] = useState(null as number | null);
-  const [maxPrice, setMaxPrice] = useState(null as number | null);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(6 as number);
-  const [sort, setSort] = useState('newest' as string);
-  const location = useLocation();
+  const [listings, setListings] = useState([] as any[])
+  const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [query, setQuery] = useState('')
+  const [minPrice, setMinPrice] = useState(null as number | null)
+  const [maxPrice, setMaxPrice] = useState(null as number | null)
+  const [pageSize, setPageSize] = useState(24)
+  const [sort, setSort] = useState('newest')
+  const [view, setView] = useState('list' as 'grid' | 'list')
+  const location = useLocation()
+  const sentinelRef = useRef(null as HTMLDivElement | null)
 
   useEffect(() => {
-  const [pageSize, setPageSize] = useState(20);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-      setListings(data || []);
-      setLoading(false);
-    });
-  }, []);
+    let mounted = true
+    api.getListings().then((data) => {
+      if (!mounted) return
+      setListings(data || [])
+      setLoading(false)
+    }).catch(() => setLoading(false))
+    return () => { mounted = false }
+  }, [])
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const cat = params.get('category');
-    if (cat) setQuery(cat);
-  }, [location.search]);
+    const params = new URLSearchParams(location.search)
+    const cat = params.get('category')
+    if (cat) setQuery(cat)
+  }, [location.search])
 
-  if (loading) return <p className="container">Loading listings…</p>;
+  useEffect(() => {
+    const el = sentinelRef.current
+    if (!el) return
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (pageSize >= listings.length) return
+          setLoadingMore(true)
+          setTimeout(() => {
+            setPageSize((p: number) => Math.min(p + 24, listings.length))
+            setLoadingMore(false)
+          }, 300)
+        }
+      })
+    }, { root: null, rootMargin: '400px', threshold: 0.05 })
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [sentinelRef, listings.length, pageSize])
+
+  if (loading) return <p className="container">Loading listings…</p>
 
   const filtered = listings.filter((l: any) => {
-    if (query) {
-      const q = query.toLowerCase();
-      const inTitle = (l.title || '').toLowerCase().includes(q);
-      const inAddress = (l.address || '').toLowerCase().includes(q);
-      if (!inTitle && !inAddress) return false;
-    }
-    if (minPrice != null && l.price < minPrice) return false;
-    if (maxPrice != null && l.price > maxPrice) return false;
-    return true;
-  });
+    if (!query) return true
+    const q = query.toLowerCase()
+    return (l.title || '').toLowerCase().includes(q) || (l.address || '').toLowerCase().includes(q)
+  })
 
-  // apply sort
   const sorted = [...filtered].sort((a: any, b: any) => {
-    if (sort === 'price_asc') return (a.price || 0) - (b.price || 0);
-    if (sort === 'price_desc') return (b.price || 0) - (a.price || 0);
-    // newest by id desc
-    return (b.id || 0) - (a.id || 0);
-  });
+    if (sort === 'price_asc') return (a.price || 0) - (b.price || 0)
+    if (sort === 'price_desc') return (b.price || 0) - (a.price || 0)
+    return (b.id || 0) - (a.id || 0)
+  })
 
-  const totalItems = sorted.length;
-  const pageItems = sorted.slice(0, pageSize);
-
-  const [view, setView] = useState('list' as 'grid' | 'list');
+  const pageItems = sorted.slice(0, pageSize)
 
   return (
     <section className="container">
       <h2>Listings</h2>
-      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: 16 }}>
         <aside style={{ width: 260 }}>
           <div style={{ background: '#fff', padding: 12, borderRadius: 8 }}>
             <h4>Filters</h4>
@@ -85,14 +87,14 @@ export default function ListingList() {
             </div>
             <div style={{ marginTop: 12 }}>
               <div className="muted">Keywords</div>
-              <input placeholder="e.g. sea view" value={query} onChange={(e: any) => { setQuery(e.target.value); setPage(1); }} />
+              <input placeholder="e.g. sea view" value={query} onChange={(e: any) => setQuery(e.target.value)} />
             </div>
           </div>
         </aside>
 
         <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <SearchBar value={query} onChange={(v) => { setQuery(v); setPage(1); }} minPrice={minPrice} maxPrice={maxPrice} onMinChange={(v) => { setMinPrice(v); setPage(1); }} onMaxChange={(v) => { setMaxPrice(v); setPage(1); }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+            <SearchBar value={query} onChange={(v) => setQuery(v)} minPrice={minPrice} maxPrice={maxPrice} onMinChange={(v) => setMinPrice(v)} onMaxChange={(v) => setMaxPrice(v)} />
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <select value={sort} onChange={(e: any) => setSort(e.target.value)} style={{ padding: '8px', borderRadius: 8 }}>
                 <option value="newest">Newest</option>
@@ -119,10 +121,11 @@ export default function ListingList() {
           )}
 
           <div style={{ marginTop: 12, textAlign: 'center' }}>
-            {pageSize < totalItems ? (
-              <button className="btn" onClick={() => setPageSize((s: number) => s + 6)}>Show more</button>
-            ) : (
-              <div className="muted">End of results</div>
-            )}
             <div ref={sentinelRef} />
+            <div className="loading-more">{loadingMore ? <Spinner /> : <div className="muted">Scroll to load more…</div>}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }

@@ -8,7 +8,8 @@ const puppeteer = require('puppeteer');
     page.on('pageerror', err => console.log('[page-error]', err.toString()));
     page.on('requestfailed', req => console.log('[request-failed]', req.url(), req.failure && req.failure().errorText));
 
-    const url = 'http://localhost:5173/';
+    const port = process.env.PORT || 4173;
+    const url = `http://localhost:${port}/`;
     console.log('Opening', url);
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 10000 }).catch(e => console.log('goto error', e && e.message));
     // wait a bit for client-side logs
