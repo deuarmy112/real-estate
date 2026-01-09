@@ -11,12 +11,20 @@ const puppeteer = require('puppeteer');
     const port = process.env.PORT || 4173;
     const url = `http://localhost:${port}/`;
     console.log('Opening', url);
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 10000 }).catch(e => console.log('goto error', e && e.message));
-    // wait a bit for client-side logs
-    await page.waitForTimeout(1500);
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 }).catch(e => console.log('goto error', e && e.message));
 
-    // capture some DOM snapshot
-    const html = await page.evaluate(() => document.documentElement.innerHTML.slice(0, 4000));
+    // wait for root to be present and for React to mount
+    try {
+      await page.waitForSelector('#root', { timeout: 8000 });
+    } catch (e) {
+      console.log('selector #root not found', e && e.message);
+    }
+
+    // capture some DOM snapshot (mounted content)
+    const html = await page.evaluate(() => {
+      const root = document.getElementById('root');
+      return root ? root.innerHTML.slice(0, 4000) : document.documentElement.innerHTML.slice(0, 4000);
+    });
     console.log('DOM snapshot (truncated):\n', html);
 
     await browser.close();
