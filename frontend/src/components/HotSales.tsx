@@ -22,7 +22,7 @@ export default function HotSales() {
               {p.media.type === 'image' ? (
                 <img src={p.media.src} alt={p.title} />
               ) : (
-                <video src={p.media.src} muted playsInline />
+                <video src={p.media.src} muted playsInline controls preload="metadata" />
               )}
             </div>
             <div className="post-footer">
