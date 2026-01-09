@@ -14,19 +14,13 @@ export default function App() {
       <div>
         <Header activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
 
+        <HotSales />
+
         <main className="container">
           <Routes>
             <Route
               path="/"
-              element={
-                <>
-                  <section style={{ padding: 28, minHeight: 240 }}>
-                    <h2 style={{ marginTop: 0 }}>Category: {activeCategory}</h2>
-                    <p className="muted">This page has been simplified to show new content driven by the header categories.</p>
-                  </section>
-                  <HotSales />
-                </>
-              }
+              element={<div style={{ padding: 28 }}><h2 style={{ marginTop:0 }}>Category: {activeCategory}</h2></div>}
             />
             <Route path="/posts/:id" element={<PostDetail />} />
           </Routes>
