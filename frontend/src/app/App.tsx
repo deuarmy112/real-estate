@@ -8,6 +8,22 @@ import "../styles.css";
 
 export default function App() {
   const [activeCategory, setActiveCategory] = React.useState('all');
+  React.useEffect(() => {
+    console.log('[app] App mounted');
+    return () => console.log('[app] App unmounted');
+  }, []);
+
+  React.useEffect(() => {
+    console.log('[app] activeCategory changed', activeCategory);
+  }, [activeCategory]);
+
+  function RouteLogger() {
+    const location = (require('react-router-dom') as any).useLocation();
+    React.useEffect(() => {
+      console.log('[app] route:', location.pathname + (location.search || ''));
+    }, [location]);
+    return null;
+  }
 
   return (
     <BrowserRouter>
@@ -15,6 +31,8 @@ export default function App() {
         <Header activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
 
         <HotSales />
+
+        <RouteLogger />
 
         <main className="container">
           <Routes>
