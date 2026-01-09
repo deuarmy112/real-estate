@@ -9,7 +9,7 @@ type Props = {
   onMaxChange?: (v: number | null) => void;
 };
 
-export default function SearchBar(/* props: Props */) {
-  // Search bar removed per request; keep component as a stub to avoid breaking imports.
+export default function SearchBar(props: Props) {
+  // Search bar removed per request; keep component as a typed stub to avoid breaking imports.
   return null;
 }

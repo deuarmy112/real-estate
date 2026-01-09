@@ -11,13 +11,13 @@ export default function ListingListClean() {
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [query, setQuery] = useState('')
-  const [minPrice, setMinPrice] = useState<number | null>(null)
-  const [maxPrice, setMaxPrice] = useState<number | null>(null)
+  const [minPrice, setMinPrice] = useState(null as number | null)
+  const [maxPrice, setMaxPrice] = useState(null as number | null)
   const [pageSize, setPageSize] = useState(24)
   const [sort, setSort] = useState('newest')
-  const [view, setView] = useState<'grid' | 'list'>('list')
+  const [view, setView] = useState('list' as 'grid' | 'list')
   const location = useLocation()
-  const sentinelRef = useRef<HTMLDivElement | null>(null)
+  const sentinelRef = useRef(null as HTMLDivElement | null)
 
   useEffect(() => {
     let mounted = true
@@ -44,7 +44,7 @@ export default function ListingListClean() {
           if (pageSize >= listings.length) return
           setLoadingMore(true)
           setTimeout(() => {
-            setPageSize((p) => Math.min(p + 24, listings.length))
+            setPageSize((p: number) => Math.min(p + 24, listings.length))
             setLoadingMore(false)
           }, 300)
         }
