@@ -24,7 +24,7 @@ export default function Header() {
             <a className="text-2xl font-bold">Bazaraki-CY Clone</a>
           </Link>
           <Link href="/listings">
-            <a className="text-sm text-gray-700">Listings</a>
+            <a className="text-sm text-gray-700 hover:text-blue-600">Listings</a>
           </Link>
         </div>
 
