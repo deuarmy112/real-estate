@@ -8,6 +8,9 @@ import "../styles.css";
 
 export default function App() {
   const [activeCategory, setActiveCategory] = React.useState('all');
+  const location = (require('react-router-dom') as any).useLocation();
+  const params = new URLSearchParams(location.search || window.location.search);
+  const showDebugOverlay = params.get('debugOverlay') === '1';
   React.useEffect(() => {
     console.log('[app] App mounted');
     return () => console.log('[app] App unmounted');
@@ -28,6 +31,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div>
+        {showDebugOverlay && <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.9)',color:'#fff,zIndex:2147483647,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:20}}>DEBUG OVERLAY — React mounted. Remove ?debugOverlay=1 to hide.</div>}
         <Header activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
 
         <HotSales />
