@@ -40,6 +40,8 @@ Set these in your hosting dashboard (e.g., Render, Vercel):
 - `DATABASE_URL`: PostgreSQL connection string (include `?sslmode=require` for Render)
 - `JWT_SECRET`: Random string for JWT signing (e.g., `openssl rand -base64 32`)
 
+If DB is not available, the app will use mock data for GET requests and still build/deploy successfully.
+
 ### Render (recommended)
 
 1. Connect your GitHub repo to Render.
@@ -48,6 +50,8 @@ Set these in your hosting dashboard (e.g., Render, Vercel):
 4. Add environment variables in Render dashboard.
 
 Health check: Visit `/api/health` after deploy to verify DB connection.
+
+If DB is unavailable, GET requests return mock data, allowing the app to run in demo mode.
 
 ### Vercel
 
