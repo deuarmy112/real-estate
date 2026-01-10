@@ -1,7 +1,13 @@
-import { query } from '../../../lib/db'
+import { query, initDb } from '../../../lib/db'
 import { requireAuth } from '../../../lib/auth'
 
 async function handler(req, res) {
+  try {
+    await initDb()
+  } catch (err) {
+    console.error('DB init failed:', err.message)
+    // continue; queries will surface errors if DB isn't available
+  }
   if (req.method === 'GET') {
     try {
       const result = await query('SELECT * FROM listings ORDER BY created_at DESC LIMIT 100')

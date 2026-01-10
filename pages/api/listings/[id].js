@@ -1,7 +1,12 @@
-import { query } from '../../../lib/db'
+import { query, initDb } from '../../../lib/db'
 import { requireAuth } from '../../../lib/auth'
 
 async function handler(req, res) {
+  try {
+    await initDb()
+  } catch (err) {
+    console.error('DB init failed:', err.message)
+  }
   const { id } = req.query
 
   if (req.method === 'GET') {
