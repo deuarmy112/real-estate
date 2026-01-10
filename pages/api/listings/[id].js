@@ -49,4 +49,7 @@ async function handler(req, res) {
   res.status(405).end('Method Not Allowed')
 }
 
-export default requireAuth(handler)
+export default async function (req, res) {
+  if (req.method === 'GET') return handler(req, res)
+  return requireAuth(handler)(req, res)
+}
