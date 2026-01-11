@@ -2,22 +2,41 @@
 
 Minimal Next.js + Tailwind starter for a Bazaraki-like real estate site.
 
+## Project Structure
+- `frontend/`: Next.js app
+- Root: Deployment configs, README
+
 ## Getting started
 
 1. Install dependencies:
 
 ```bash
+cd frontend
 npm install
 ```
 
 2. Set up environment variables (copy `.env.local` and fill in):
 
 ```bash
-cp .env.local.example .env.local
-# Edit .env.local with your DATABASE_URL and JWT_SECRET
+cp frontend/.env.local.example frontend/.env.local
+# Edit frontend/.env.local with your DATABASE_URL and JWT_SECRET
 ```
 
 3. Initialize database (optional, runs automatically on API calls):
+
+```bash
+cd frontend
+npm run migrate
+```
+
+4. Run development server:
+
+```bash
+cd frontend
+npm run dev
+```
+
+Open http://localhost:3000 in your browser.
 
 ```bash
 npm run migrate
@@ -45,8 +64,10 @@ If DB is not available, the app will use mock data for GET requests and still bu
 ### Render (recommended)
 
 1. Connect your GitHub repo to Render.
-2. Set build command: `npm run migrate && npm run build`
-3. Set start command: `npm start`
+2. For the **frontend service**, set:
+   - Build Command: `cd frontend && npm run migrate && npm run build`
+   - Start Command: `cd frontend && npm start`
+3. For the **backend service** (if separate), configure accordingly.
 4. Add environment variables in Render dashboard.
 
 Health check: Visit `/api/health` after deploy to verify DB connection.
