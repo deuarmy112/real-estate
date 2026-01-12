@@ -1,6 +1,11 @@
 #!/usr/bin/env node
+// Load dotenv only if .env.local exists (for local dev)
 const path = require('path')
-require('dotenv').config({ path: path.resolve(process.cwd(), '.env.local') })
+const fs = require('fs')
+const envPath = path.resolve(process.cwd(), '.env.local')
+if (fs.existsSync(envPath)) {
+  require('dotenv').config({ path: envPath })
+}
 
 const { initDb } = require(path.resolve(process.cwd(), 'lib', 'db.js'))
 
