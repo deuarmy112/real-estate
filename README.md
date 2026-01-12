@@ -1,99 +1,88 @@
-# Real Estate — Bazaraki-style Clone
+# Real Estate App
 
-Minimal Next.js + Tailwind starter for a Bazaraki-like real estate site.
+This repository contains a full-stack real estate application built with Next.js, inspired by Bazaraki CY. It allows users to browse, create, edit, and delete property listings with search, filtering, and pagination.
 
-## Project Structure
-- `frontend/`: Next.js app
-- Root: Deployment configs, README
+## Features
+- **Frontend**: Next.js with React, styled with Tailwind CSS.
+- **Backend**: Next.js API routes for serverless backend.
+- **Database**: PostgreSQL for data storage.
+- **Authentication**: JWT-based user auth.
+- **Search & Filters**: Search by location, price range, property type.
+- **Pagination**: Efficient listing pagination.
+- **Deployment**: Hosted on Render with automatic builds.
 
-## Getting started
+## Tech Stack
+- Next.js 13.5.11
+- React 18
+- Tailwind CSS
+- PostgreSQL
+- pg (PostgreSQL client)
+- jsonwebtoken
+- dotenv
 
-1. Install dependencies:
+## Quick Start (Local Development)
 
-```bash
-cd frontend
-npm install
-```
+### Prerequisites
+- Node.js 16.14+ (18 recommended)
+- PostgreSQL database (local or cloud)
 
-2. Set up environment variables (copy `.env.local` and fill in):
+### Setup
+1. **Clone the repo**:
+   ```bash
+   git clone https://github.com/deuarmy112/real-estate.git
+   cd real-estate
+   ```
 
-```bash
-cp frontend/.env.local.example frontend/.env.local
-# Edit frontend/.env.local with your DATABASE_URL and JWT_SECRET
-```
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-3. Initialize database (optional, runs automatically on API calls):
+3. **Set up environment variables**:
+   - Copy `.env.local.example` to `.env.local` (if exists).
+   - Set the following in `.env.local` or your environment:
+     - `DATABASE_URL`: Your PostgreSQL connection string (e.g., `postgresql://user:pass@localhost:5432/realestate`).
+     - `JWT_SECRET`: A secret key for JWT tokens.
+     - `PORT`: Optional, defaults to 3000.
 
-```bash
-cd frontend
-npm run migrate
-```
+4. **Run database migration** (creates tables if needed):
+   ```bash
+   npm run migrate
+   ```
 
-4. Run development server:
-
-```bash
-cd frontend
-npm run dev
-```
-
-Open http://localhost:3000 in your browser.
-
-```bash
-npm run migrate
-```
-
-4. Run development server:
-
-```bash
-npm run dev
-```
-
-Open http://localhost:3000 in your browser.
+5. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+   - Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Deployment
+- The app is deployed on Render.
+- Build Command: `npm install && npm run migrate && npm run build`
+- Start Command: `npm start`
+- Set environment variables in Render: `DATABASE_URL`, `JWT_SECRET`, `NODE_VERSION=18`
 
-### Environment Variables
+## API Endpoints
+- `GET /api/listings` - Fetch listings with optional search/filters/pagination.
+- `POST /api/listings` - Create a new listing (auth required).
+- `GET /api/listings/[id]` - Get a single listing.
+- `PUT /api/listings/[id]` - Update a listing (auth required).
+- `DELETE /api/listings/[id]` - Delete a listing (auth required).
+- `POST /api/auth/login` - User login.
+- `POST /api/auth/register` - User registration.
 
-Set these in your hosting dashboard (e.g., Render, Vercel):
+## Project Structure
+- `pages/` - Next.js pages and API routes.
+- `components/` - Reusable React components.
+- `lib/` - Utility functions (DB, auth).
+- `styles/` - Global CSS.
+- `scripts/` - DB migration script.
 
-- `DATABASE_URL`: PostgreSQL connection string (include `?sslmode=require` for Render)
-- `JWT_SECRET`: Random string for JWT signing (e.g., `openssl rand -base64 32`)
+## Next Steps
+- Add image uploads for listings.
+- Improve UI/UX and responsiveness.
+- Add user profiles and favorites.
+- Implement tests and CI/CD.
 
-If DB is not available, the app will use mock data for GET requests and still build/deploy successfully.
-
-### Render (recommended)
-
-1. Connect your GitHub repo to Render.
-2. For the **frontend service**, set:
-   - Build Command: `cd frontend && npm run migrate && npm run build`
-   - Start Command: `cd frontend && npm start`
-3. For the **backend service** (if separate), configure accordingly.
-4. Add environment variables in Render dashboard.
-
-Health check: Visit `/api/health` after deploy to verify DB connection.
-
-If DB is unavailable, GET requests return mock data, allowing the app to run in demo mode.
-
-### Vercel
-
-1. Connect repo to Vercel.
-2. Add environment variables in Vercel dashboard.
-3. Vercel runs `npm run build` automatically; add a build hook if needed to run migration.
-
-## What I created
-
-- Basic Next.js app scaffold
-- Tailwind CSS setup (`tailwind.config.js`, `postcss.config.js`)
-- `pages/index.js`, dynamic `pages/listings/[id].js`
-- Simple components: `components/Header.js`, `components/ListingCard.js`
-- API routes: `/api/listings`, `/api/listings/[id]`, `/api/auth/login`, `/api/health`
-- DB helpers: `lib/db.js`, `lib/auth.js`
-- Migration script: `scripts/init-db.js`
-- Features: Listings CRUD, search/filters, pagination, auth
-
-## Next steps
-
-- Add image uploads (local or cloud)
-- Polish UI/UX and accessibility
-- Add user accounts and profiles
-- Deploy and test in production
+## License
+MIT
